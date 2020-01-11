@@ -1,0 +1,5 @@
+node_modules
+*.pdf
+dist/
+scratch.js
+*.lock
