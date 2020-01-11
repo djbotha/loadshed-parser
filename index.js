@@ -45,13 +45,16 @@ function parseFiles(region, first, last, startTimes, duration) {
   for (let i = first; i <= last; i++) {
     console.log(`Processing Stage ${i}:`);
     const currStage = rows
-      .filter(row => row.startsWith(`Stage ${i}`))
-      .map(str => str.replace(`Stage ${i}`, "")) // remove leading `Stage ${i}`
-      .map(str => str.replace(/(\d)B/g, "$1;B")) // delimit columns with ';'
-      .map(str => str.replace(/Block /g, "")) // remove "Block" keywords
-      .map(str => str.replace(/ & /g, ",")) // remove & delimiters
+      .filter(row => row.startsWith(`Stage ${i}`)) // only take the current stage's rows
       .map(
-        str => str.split(";").map((col, idx) => ({ [idx + 1]: col })) // wrangle each day to have correct headers for the csvWriter
+        row =>
+          row
+            .replace(`Stage ${i}`, "") // remove leading `Stage ${i}`
+            .replace(/(\d)B/g, "$1;B") // delimit columns with ';'
+            .replace(/Block /g, "") // remove "Block" keywords
+            .replace(/ & /g, ",") // remove & delimiters
+            .split(";") // split on ; delimiters
+            .map((col, idx) => ({ [idx + 1]: col })) // wrangle each day to have correct headers for the csvWriter
       )
       .map((row, idx) => {
         const out = {
@@ -83,15 +86,15 @@ function readAndParseSchedules(
   parseFiles(region, minStage, maxStage, startTimes, duration);
 }
 
-readAndParseSchedules(
-  "./schedule.pdf",
-  "EL",
-  8,
-  1,
-  4,
-  ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"],
-  "03:00"
-);
+// readAndParseSchedules(
+//   "./schedule.pdf",
+//   "EL",
+//   8,
+//   1,
+//   4,
+//   ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"],
+//   "03:00"
+// );
 
 readAndParseSchedules(
   "./schedule.pdf",
