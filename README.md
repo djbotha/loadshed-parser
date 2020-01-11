@@ -20,8 +20,8 @@ yarn start
 
 ### Reading the government schedule
 
-There was no easy way to do this. The best solution I came up with was to read the PDF with `pdf-parse`, dump the text to stdout and copy it into two variables (`schedule` and `continued`). The PDF dump will split the two pages, so after storing the two pages' table content, re-run the `readPDF()` function. This will concatenate those two variables in order to store the schedule in a single txt file.
+There was no easy way to do this. The best solution I came up with was to read the PDF with `pdf-parse`, dump the text to stdout (with `dumpPDF()`) and copy it into two variables (`schedule` and `continued`). The PDF dump will split the two pages, so after storing the two pages' table content, re-run the `saveSchedule()` function. This will concatenate those two variables in order to store the schedule in a single txt file.
 
 ### Parsing the schedule
 
-After the manual process above, you should have files similar to `EL-1-4.txt` and `EL-5-8.txt`. Next, run the `parseFiles()` function with the appropriate arguments (see my examples) and you'll have an ESP-friendly schedule to dump out.
+After the manual process above, you should have files similar to `EL-1-4.txt` and `EL-5-8.txt`. Next, run the `parseSchedules()` function with the appropriate arguments (see my examples) and you'll have an ESP-friendly schedule to dump out.

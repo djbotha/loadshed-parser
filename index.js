@@ -2,14 +2,16 @@ const fs = require("fs");
 const pdf = require("pdf-parse");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 
-function readPDF(inputFile, page, region, first, last) {
+function dumpPDF(inputFile, page) {
   // Read initial data from PDF and just copy it out manually
   const databuffer = fs.readFileSync(inputFile);
 
   pdf(databuffer, { max: page }).then(data => {
-    console.log("Loaded PDF");
+    console.log(data);
   });
+}
 
+function saveSchedule(region, first, last) {
   // Add the first half of the schedule here (that's on the first page)
   const schedule = "";
   //  Add the second (continued) half of the schedule here (that's on the first page)
@@ -25,7 +27,7 @@ function readPDF(inputFile, page, region, first, last) {
   );
 }
 
-function parseFiles(region, first, last, startTimes, duration) {
+function parseSchedules(region, first, last, startTimes, duration) {
   const baseDir = `output/${region}`;
   const data = fs.readFileSync(
     `./schedules/${region}-${first}-${last}.txt`,
@@ -90,8 +92,9 @@ function readAndParseSchedules(
   startTimes,
   duration
 ) {
-  //   readPDF(inputFile, lastPage, region, minStage, maxStage);
-  parseFiles(region, minStage, maxStage, startTimes, duration);
+  //   dumpPDF(inputFile, lastPage);
+  //   saveSchedule(region, minStage, maxStage);
+  parseSchedules(region, minStage, maxStage, startTimes, duration);
 }
 
 const INPUT_FILE = "./schedules/schedule.pdf";
