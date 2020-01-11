@@ -17,7 +17,7 @@ function readPDF(inputFile, page, region, first, last) {
 
   const split = continued.split(/\n/);
 
-  const combined = oneToFour1.split(/\n/).map((curr, idx) => curr + split[idx]);
+  const combined = schedule.split(/\n/).map((curr, idx) => curr + split[idx]);
 
   fs.writeFileSync(`./${region}-${first}-${last}.txt`, combined.join("\n"));
 }
