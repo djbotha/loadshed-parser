@@ -1,6 +1,6 @@
 # Loadshed Parser
 
-Small application to handle the parsing of [East London's loadshedding schedule](https://link).
+Small application to handle the parsing of [East London's loadshedding schedule](https://drive.google.com/file/d/1peHb083rJ3h4jUiJaWpsaW6Zt5h5v2D2/view).
 
 Built to assist the team from [Eskom Se Push](https://sepush.co.za/).
 
