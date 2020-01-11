@@ -19,15 +19,24 @@ function readPDF(inputFile, page, region, first, last) {
 
   const combined = schedule.split(/\n/).map((curr, idx) => curr + split[idx]);
 
-  fs.writeFileSync(`./${region}-${first}-${last}.txt`, combined.join("\n"));
+  fs.writeFileSync(
+    `./schedules/${region}-${first}-${last}.txt`,
+    combined.join("\n")
+  );
 }
 
 function parseFiles(region, first, last, startTimes, duration) {
-  const data = fs.readFileSync(`./${region}-${first}-${last}.txt`, "utf8");
+  const baseDir = `output/${region}`;
+  const data = fs.readFileSync(
+    `./schedules/${region}-${first}-${last}.txt`,
+    "utf8"
+  );
   const rows = data.split(/\n/);
 
+  fs.mkdirSync(baseDir, { recursive: true }); // create necessary output folders
+
   const defaultValues = stage => ({
-    path: `output/stage${stage}.csv`,
+    path: `${baseDir}/stage${stage}.csv`,
     fieldDelimiter: ";",
     header: [
       { id: "from", title: "FROM" },
@@ -43,7 +52,6 @@ function parseFiles(region, first, last, startTimes, duration) {
   });
 
   for (let i = first; i <= last; i++) {
-    console.log(`Processing Stage ${i}:`);
     const currStage = rows
       .filter(row => row.startsWith(`Stage ${i}`)) // only take the current stage's rows
       .map(
@@ -62,13 +70,13 @@ function parseFiles(region, first, last, startTimes, duration) {
           duration: duration
         };
 
-        Object.assign(out, ...row);
+        Object.assign(out, ...row); // append `row` to `out`
         return out;
       });
 
     const csvWriter = createCsvWriter(defaultValues(i));
     csvWriter.writeRecords(currStage).then(() => {
-      console.log(`Successfully wrote Stage ${i}`);
+      console.log(`Successfully wrote Stage ${i} in ${baseDir}/stage${i}.csv`);
     });
   }
 }
@@ -86,9 +94,12 @@ function readAndParseSchedules(
   parseFiles(region, minStage, maxStage, startTimes, duration);
 }
 
+const INPUT_FILE = "./schedules/schedule.pdf";
+const REGION = "EL";
+
 // readAndParseSchedules(
-//   "./schedule.pdf",
-//   "EL",
+//   INPUT_FILE,
+//   REGION,
 //   8,
 //   1,
 //   4,
@@ -97,8 +108,8 @@ function readAndParseSchedules(
 // );
 
 readAndParseSchedules(
-  "./schedule.pdf",
-  "EL",
+  INPUT_FILE,
+  REGION,
   10,
   5,
   8,
